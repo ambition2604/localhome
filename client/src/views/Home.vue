@@ -15,7 +15,7 @@
         <h5 class="text"><strong>Phone :</strong>  {{ course.phone }}</h5>
         <h5 class="text"><strong>Created Date:</strong> {{course.createDate}}</h5>
         <hr>
-        <h5><button class="btn btn-success btn-lg btn-block">Join</button></h5>
+        <h5><button class="btn btn-success btn-lg btn-block" v-on:click="viewMenu(course.title,course.shop_id)">Join</button></h5>
         
         </div>
         </div>
@@ -79,16 +79,10 @@ export default {
             this.error = err.message;
         }
     },
-  async viewCourseDetail(item) {
-    var t = item.toString();
-    console.log(t);
-    var g = await ShopService.getShopbyID(item);
-    g = JSON.stringify(g);
-    g = g.toString();
-    var l = g.split('{"name":"',);
-    console.log(l);
-     var n = JSON.stringify(await UserService.findUsers(localStorage.getItem('username')));
-     console.log(n);
+  async viewMenu(item,item1) {
+    localStorage.setItem('title_course',item);
+    localStorage.setItem('shop_id',item1);
+    this.$router.push({ name: 'Menu'});
   }
   },
 }

@@ -4,6 +4,7 @@ import MyCourse from '../views/MyCourse.vue'
 import CourseInfo from '../views/CourseInfo.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
+import Menu from '../views/Menu.vue'
 
 
 Vue.use(VueRouter)
@@ -18,6 +19,11 @@ Vue.use(VueRouter)
     path: '/courseinfo',
     name: 'CourseInfo',
     component: CourseInfo
+  },
+  {
+    path: '/menu',
+    name: 'Menu',
+    component: Menu
   },
   {
     path: '/home',

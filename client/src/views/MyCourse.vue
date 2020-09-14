@@ -37,7 +37,7 @@
         <h5 v class="text"><strong>Shop :</strong>  {{ course.shop }}</h5>
         <h5 class="text"><strong>Phone :</strong>  {{ course.phone }}</h5>
         <h5 class="text"><strong>Created Date:</strong> {{course.createDate}}</h5>
-        <h5 class="text"><strong>Status:</strong> {{course.status}}<button style="margin-left:80px" class="btn btn-info" v-on:click="viewCourseDetail( course.shop_id )">Details</button></h5>
+        <h5 class="text"><strong>Status:</strong> {{course.status}}<button style="margin-left:80px" class="btn btn-info" v-on:click="viewCourseDetail(course.title)">Details</button></h5>
         
         </div>
         </div>
@@ -78,7 +78,7 @@ export default {
           console.log(element.id.valueOf());
       });
       var host_id = user.substring(start,end);
-       this.c = await CourseService.getCourses(host_id);
+      this.c = await CourseService.getCourses(host_id);
       this.shops = await ShopService.getShop();
       this.c.forEach(async (element) => {
           var n = await ShopService.getShopbyID(element.shop_id.valueOf());
@@ -97,8 +97,10 @@ export default {
   methods: {
     async add () {
         var user = JSON.stringify(await UserService.findUsers(localStorage.getItem('username')));
-        user = user.toString();
-        var host_id = user.substring(7,8);
+        var x = user.toString(); 
+        var start = x.indexOf(':')+1;
+        var end =   x.indexOf(',"username');
+        var host_id = user.substring(start,end);
         try { 
             await CourseService.addCourse(this.input.title,this.input.des,this.selected,host_id);
             location.reload();  
@@ -107,15 +109,7 @@ export default {
         }
     },
   async viewCourseDetail(item) {
-    var t = item.toString();
-    console.log(t);
-    var g = await ShopService.getShopbyID(item);
-    g = JSON.stringify(g);
-    g = g.toString();
-    var l = g.split('{"name":"',);
-    console.log(l);
-     var n = JSON.stringify(await UserService.findUsers(localStorage.getItem('username')));
-     console.log(n);
+   this.$router.push({ name: 'CourseInfo' ,params: { title: item } });
   }
   },
 }

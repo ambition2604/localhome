@@ -1,5 +1,5 @@
 <template>
-    <div>{{ id }} {{ title }}</div>
+    <div>{{ this.title }} </div>
 </template>
 <script>
 export default {
@@ -8,13 +8,11 @@ export default {
     },
     data() {
         return {
-           id: null,
            title:''
         }
     },
     created() {
-        this.id =  this.$route.params.id;
-        this.title =  this.$route.params.title;
+         this.title =  this.$route.params.title;
     },
 }
 </script>

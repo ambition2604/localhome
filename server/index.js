@@ -12,11 +12,13 @@ const login = require('./routers/api/login');
 const course = require('./routers/api/course');
 const shop = require('./routers/api/shop');
 const user = require('./routers/api/user');
+const menu = require('./routers/api/menu');
 app.use('/api/course',course);
 app.use('/api/login',login);
 app.use('/api/shop',shop);
 app.use('/api/user',user);
+app.use('/api/menu',menu);
 
- const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
  app.listen(port, () => console.log(`Server started on post ${port}`));

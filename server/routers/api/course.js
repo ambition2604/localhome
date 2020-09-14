@@ -33,8 +33,8 @@ router.post('/', async(req,res) =>{
 router.post('/add',async (req,res) =>{
     var title = req.body.title;
     var des = req.body.des;
-    var shop_name = req.body.shop_name;
-    var host_name = req.body.host_name;
+    var shop_id = req.body.shop_id;
+    var host_id = req.body.host_id;
     var db =  mysql.createConnection({
         host        : 'localhost',
         user        : 'root',
@@ -46,7 +46,7 @@ router.post('/add',async (req,res) =>{
             throw error;
         }
     });
-    let sql = `INSERT INTO course (title,des,shop_id,host_id) VALUES ('${title}','${des}',1,1)`;
+    let sql = `INSERT INTO course (title,des,shop_id,host_id) VALUES ('${title}','${des}','${shop_id}','${host_id}')`;
     await db.query(sql,(error) => {
         if(error) throw error;
         res.send('Success');
