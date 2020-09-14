@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MyCourse from '../views/MyCourse.vue'
+import CourseInfo from '../views/CourseInfo.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 
@@ -12,6 +13,11 @@ Vue.use(VueRouter)
     path: '/',
     name: 'Course',
     component: MyCourse
+  },
+  {
+    path: '/courseinfo',
+    name: 'CourseInfo',
+    component: CourseInfo
   },
   {
     path: '/home',

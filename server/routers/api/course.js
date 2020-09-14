@@ -3,7 +3,8 @@ const mysql = require('mysql');
 const router = express.Router();
 
 //Get 
-router.get('/', async(req,res) =>{
+router.post('/', async(req,res) =>{
+    var host_id = req.body.host_id;
     var db =  mysql.createConnection({
         host        : 'localhost',
         user        : 'root',
@@ -15,7 +16,7 @@ router.get('/', async(req,res) =>{
             throw error;
         }
     });
-    let sql = `SELECT * from course `;        
+    let sql = `SELECT * from course WHERE host_id = '${host_id}'`;        
     await db.query(sql,(error,result) => {
         if(error) throw error;
         
@@ -29,7 +30,7 @@ router.get('/', async(req,res) =>{
 });
 
 //Post
-router.post('/',async (req,res) =>{
+router.post('/add',async (req,res) =>{
     var title = req.body.title;
     var des = req.body.des;
     var shop_name = req.body.shop_name;
@@ -48,7 +49,7 @@ router.post('/',async (req,res) =>{
     let sql = `INSERT INTO course (title,des,shop_id,host_id) VALUES ('${title}','${des}',1,1)`;
     await db.query(sql,(error) => {
         if(error) throw error;
-        res.send('Succes');
+        res.send('Success');
     });    
     db.end();
 });
