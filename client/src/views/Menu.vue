@@ -52,16 +52,11 @@ export default {
         this.menus = await MenuService.getMenubyID(this.id);
         if(localStorage.getItem('m_id')===null){
           this.items = await ItemService.findItembyMenu(this.menus[0].id);
-          this.items.forEach(async (element) => {
-             element.quantity = 0;
-        })
+         
         }
         else{
           this.items = await ItemService.findItembyMenu(localStorage.getItem('m_id'));
-          this.items.forEach(async (element) => {
-             element.quantity = 0;
-            if(localStorage.getItem('quan') != null)  element.quantity = localStorage.getItem('quan');
-        })
+        
         }
         
     },
@@ -69,31 +64,22 @@ export default {
       async menuSelected(id){
           localStorage.setItem('m_id',id);
           this.items = await ItemService.findItembyMenu(id);
-          this.items.forEach(async (element) => {
-             element.quantity = 0;
-             if(localStorage.getItem('quan') != null)  element.quantity = localStorage.getItem('quan');
-        })
+        
       },
       async increment(item) {
         item.quantity ++;
         localStorage.setItem('quan',item.quantity);
-        this.items.forEach(async (element) => {
-            if(localStorage.getItem('quan') != null)  element.quantity = localStorage.getItem('quan');
-        })
+       
       },
       async decrement(item  ) {
       if (item.quantity == 0) {
         item.quantity = 0;
         localStorage.setItem('quan',item.quantity);
-        this.items.forEach(async (element) => {
-            if(localStorage.getItem('quan') != null)   element.quantity = localStorage.getItem('quan');
-        })
+        
       } else {
         item.quantity --;
         localStorage.setItem('quan',item.quantity);
-        this.items.forEach(async (element) => {
-            if(localStorage.getItem('quan') != null)  element.quantity = localStorage.getItem('quan');
-        })
+        
       }
       }
     },

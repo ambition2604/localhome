@@ -45,7 +45,9 @@ router.post('/menu_id', async(req,res) =>{
         if(error) throw error;
         
         if(result.length > 0){
-
+            result.forEach(element => {
+                element.quantity = 0;
+            });
             res.send(result);
 
         }else res.status(401).json({error: "Error"});
