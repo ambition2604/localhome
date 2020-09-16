@@ -1,7 +1,7 @@
 <template>
 <body class="bg-login">
   <div class="login-form">
-    <h3>Đăng nhập</h3>
+    <h3 style="text-align:center">Đăng nhập</h3>
     <br>
     <form >
       <div class="form-group">
@@ -24,7 +24,7 @@
 	.bg-login {
     position: relative;
     width: 100%;
-	margin-left: 35%;
+	margin-left: 40%;
     min-height: auto;
     background-position: right 0px top 0px;
     -webkit-background-size: cover;
@@ -32,7 +32,6 @@
     background-size: cover;
     -o-background-size: cover;
   }
-
   .login-form {
     border: 1px solid #DDD;
     max-width: 400px;
@@ -57,9 +56,9 @@ export default {
                try {
                  var response = await AuthenticationService.check(this.input.username,this.input.password  )
                   if(response){
-					localStorage.setItem('username',this.input.username)
-                    localStorage.setItem('token',response)
-                    this.$router.replace({ name: "Course" });
+					localStorage.setItem('username',this.input.username);
+					localStorage.setItem('token',response);
+                    this.$router.replace({ name: "Home" });
                   }     
                } catch (err) {
                     this.error = err.message;
@@ -69,3 +68,4 @@ export default {
         }
     }
 </script>
+© 2020 GitHub, Inc.

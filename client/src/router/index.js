@@ -11,7 +11,7 @@ Vue.use(VueRouter)
   
   const routes = [
   {
-    path: '/',
+    path: '/course',
     name: 'Course',
     component: MyCourse
   },
@@ -26,7 +26,7 @@ Vue.use(VueRouter)
     component: Menu
   },
   {
-    path: '/home',
+    path: '/',
     name: 'Home',
     component: Home
   },
