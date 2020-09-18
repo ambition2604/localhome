@@ -2,7 +2,7 @@
   <div class="container" style="font-family: Comic Sans MS">
   <div>
   <b-button v-b-modal.modal-1><b-icon icon="plus-square"></b-icon></b-button>
-  <b-modal id="modal-1">
+  <b-modal id="modal-1" hide-footer="true" title="Add Course">
     <div>
 			<form class="form-group" style="font-family: Comic Sans MS">
         <label>Title</label><hr>
@@ -31,13 +31,14 @@
         v-bind:item="course"
         v-bind:index="index"
         v-bind:key="course._id">
+        
         <div class="rounded border border-light shadow nhome-each-course" >
         <h4 class="text-center" style="font-weight:bold">{{ course.title }}</h4>
         <hr>
-        <h5 v class="text"><strong>Shop :</strong>  {{ course.shop }}</h5>
+        <h5 v class="text"><strong>Shop :</strong>  {{ course.name }}</h5>
         <h5 class="text"><strong>Phone :</strong>  {{ course.phone }}</h5>
-        <h5 class="text"><strong>Created Date:</strong> {{course.createDate}}</h5>
-        <h5 class="text"><strong>Status:</strong> {{course.status}}<button style="margin-left:80px" class="btn btn-info" v-on:click="viewCourseDetail(course.title)">Details</button></h5>
+        <h5 class="text"><strong>Created Date:</strong> {{course.des}}</h5>
+        <h5 class="text"><strong>Status:</strong> {{course.status}}<button style="margin-left:80px" class="btn btn-info" v-on:click="viewCourseDetail(course.id)">Details</button></h5>
         
         </div>
         </div>
@@ -69,27 +70,13 @@ export default {
   async created() {
     try {
       var user = JSON.stringify(await UserService.findUsers(localStorage.getItem('username')));
-      var u = await UserService.findUsers(localStorage.getItem('username'));
       var x = user.toString(); 
       var start = x.indexOf(':')+1;
       var end =   x.indexOf(',"username');
-      u.forEach(function (element) {
-          element.Active = start;
-          console.log(element.id.valueOf());
-      });
+  
       var host_id = user.substring(start,end);
-      this.c = await CourseService.getCourses(host_id);
-      this.shops = await ShopService.getShop();
-      this.c.forEach(async (element) => {
-          var n = await ShopService.getShopbyID(element.shop_id.valueOf());
-          console.log(n[0].name.valueOf());
-          if(!element.shop) element.shop = await n[0].name.valueOf();
-        
-          if(!element.phone) element.phone = await n[0].phone.valueOf();
-          console.log(element);
-      });
-      this.courses =await this.c;
-    
+      this.courses = await CourseService.getCoursesbyId(host_id);
+      this.shops = await ShopService.getShop(); 
     } catch (err) {
       this.error = err.message;
     }
@@ -109,7 +96,7 @@ export default {
         }
     },
   async viewCourseDetail(item) {
-   this.$router.push({ name: 'CourseInfo' ,params: { title: item } });
+       this.$router.push({ name: "Order",params: { u: item }});
   }
   },
 }
@@ -146,33 +133,27 @@ export default {
   .nhome-course {
   padding: 10px;
 }
-
 .nhome-each-course {
   width: 100%;
   /* height: 50px; */
   padding: 10px;
 }
-
 .nhome-btn {
   min-width: 50px;
   min-height: 50px;
   max-width: 100px;
   max-height: 100px;
 }
-
 .nhome-btn button {
   width: 100%;
   height: 100%;
 }
-
 .nhome-course-container {
   margin-top: 20px;
 }
-
 .nhome-course-body {
   margin-top: 20px;
 }
-
 .course-btn {
   font-weight: bold;
   text-align: center;
@@ -181,7 +162,6 @@ export default {
   padding: 5px 10px;
   width: 80%;
 }
-
 .course-select {
   display: block;
   width: 100%;
@@ -193,7 +173,6 @@ export default {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
 }
-
 .form-group p {
   color: red;
 }

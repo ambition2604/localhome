@@ -13,9 +13,9 @@
         <hr>
         <h5 v class="text"><strong>Shop :</strong>  {{ course.name }}</h5>
         <h5 class="text"><strong>Phone :</strong>  {{ course.phone }}</h5>
-        <h5 class="text"><strong>Created Date:</strong> {{course.createDate}}</h5>
+        <h5 class="text"><strong>Host :</strong>  {{ course.username }}</h5>
         <hr>
-        <h5><button class="btn btn-success btn-lg btn-block" v-on:click="viewMenu(course.title,course.shop_id)">Join</button></h5>
+        <h5><button class="btn btn-success btn-lg btn-block" v-on:click="viewMenu(course.title,course.shop_id,course.id,course.username)">Join</button></h5>
         
         </div>
         </div>
@@ -45,24 +45,8 @@ export default {
   },
   async created() {
     try {
-      var user = JSON.stringify(await UserService.findUsers(localStorage.getItem('username')));
-      var u = await UserService.findUsers(localStorage.getItem('username'));
-      var x = user.toString(); 
-      var start = x.indexOf(':')+1;
-      var end =   x.indexOf(',"username');
-      u.forEach(function (element) {
-          element.Active = start;
-          console.log(element.id.valueOf());
-      });
-      var host_id = user.substring(start,end);
-      var c = await CourseService.getCourses(host_id);
+      this.courses = await CourseService.getCourses();
       this.shops = await ShopService.getShop();
-      c.forEach(async (element) => {
-      var n = await ShopService.getShopbyID(element.shop_id.valueOf());
-        element.shop = await n[0].name.valueOf();
-        element.phone = await n[0].phone.valueOf();
-      });
-      this.courses =await c;
     } catch (err) {
       this.error = err.message;
     }
@@ -79,9 +63,11 @@ export default {
             this.error = err.message;
         }
     },
-  async viewMenu(item,item1) {
+  async viewMenu(item,item1,item2,item3) {
     localStorage.setItem('title_course',item);
     localStorage.setItem('shop_id',item1);
+    localStorage.setItem('course_id',item2);
+    localStorage.setItem('host_name',item3);
     this.$router.push({ name: 'Menu'});
   }
   },
@@ -99,37 +85,30 @@ export default {
     font-weight: 400;
     line-height: 1.5;
 }
-
   .nhome-course {
   padding: 10px;
 }
-
 .nhome-each-course {
   width: 100%;
   /* height: 50px; */
   padding: 10px;
 }
-
 .nhome-btn {
   min-width: 50px;
   min-height: 50px;
   max-width: 100px;
   max-height: 100px;
 }
-
 .nhome-btn button {
   width: 100%;
   height: 100%;
 }
-
 .nhome-course-container {
   margin-top: 20px;
 }
-
 .nhome-course-body {
   margin-top: 20px;
 }
-
 .course-btn {
   font-weight: bold;
   text-align: center;
@@ -138,7 +117,6 @@ export default {
   padding: 5px 10px;
   width: 80%;
 }
-
 .course-select {
   display: block;
   width: 100%;
@@ -150,7 +128,6 @@ export default {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
 }
-
 .form-group p {
   color: red;
 }

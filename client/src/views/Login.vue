@@ -1,16 +1,19 @@
 <template>
-<body class="bg-login">
-  <div class="login-form">
-    <h3 style="text-align:center">Đăng nhập</h3>
+<div class="bg-login">
+  <h1 style="text-align:center;">Welcome</h1>
+  <br>
+  <br>
+  <div class="login-form" style=" margin: auto;">
+    <h3 style="text-align:center">Login</h3>
     <br>
     <form >
       <div class="form-group">
-        <label>Tên tài khoản</label>
-        <input name="username" v-model="input.username" type="text" class="form-control"  required/>
+        <label for="usrname">Username</label>
+        <input  name="username" v-model="input.username" type="text" class="form-control"  required>
       </div>
       <div class="form-group">
-        <label>Mật khẩu</label>
-        <input name="password" type="password" v-model="input.password" class="form-control"  required/>
+        <label for="psw">Password</label>
+        <input name="password" type="password" v-model="input.password" class="form-control"  required>
       </div>
       <br>
       <div class="form-group">
@@ -18,13 +21,13 @@
       </div>
     </form>
   </div>
-</body>
+</div>
 </template>
 <style>
 	.bg-login {
+    font-family: Comic Sans MS;
     position: relative;
     width: 100%;
-	margin-left: 40%;
     min-height: auto;
     background-position: right 0px top 0px;
     -webkit-background-size: cover;
@@ -42,8 +45,8 @@
 <script>
 import AuthenticationService from '../service/AuthenticationService'
 export default {
-        name: 'Login',
-        data() {
+  name: 'Login',
+    data() {
             return {
                 input: {
                     username: "",
@@ -52,20 +55,20 @@ export default {
             }
         },
         methods: {
-            async login () {
-               try {
-                 var response = await AuthenticationService.check(this.input.username,this.input.password  )
-                  if(response){
+async login () {
+      try {
+        var response = await AuthenticationService.check(this.input.username,this.input.password  )
+          if(response){
 					localStorage.setItem('username',this.input.username);
 					localStorage.setItem('token',response);
-                    this.$router.replace({ name: "Home" });
-                  }     
-               } catch (err) {
-                    this.error = err.message;
-               }
+          this.$router.replace({ name: "Home" });
+
+            }     
+      } catch (err) {
+          this.error = err.message;
+      }
                
             }
         }
     }
 </script>
-© 2020 GitHub, Inc.
