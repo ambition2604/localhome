@@ -77,6 +77,7 @@ body {
 <script>
 export default {
   data() {
+    
     return {
       count : localStorage.getItem('count')
     }

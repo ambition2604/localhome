@@ -95,8 +95,8 @@ router.post('/updatestatus',async (req,res) =>{
             throw error;
         }
     });
-    var update_status ='End of payment';
-    if(course_status=='End of payment') update_status = 'Opening';
+    var update_status ='Closing';
+    if(course_status=='Closing') update_status = 'Opening';
     let sql = `UPDATE course SET status = '${update_status}' WHERE id = '${course_id}'`;
     await db.query(sql,(error) => {
         if(error) throw error;

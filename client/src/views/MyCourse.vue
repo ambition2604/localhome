@@ -42,8 +42,8 @@
         <h5 class="text">
          <select  @change="onChange(course.id,course.status)">
             <option>{{course.status}}</option>
-            <option v-if="course.status == 'Opening'">End of payment</option>
-            <option v-if="course.status == 'End of payment'">Opening</option>
+            <option v-if="course.status == 'Opening'">Closing</option>
+            <option v-if="course.status == 'Closing'">Opening</option>
           </select>
 
           <button style="margin-left:80px" class="btn btn-info" v-on:click="viewCourseDetail(course.id)">Details</button>
@@ -113,10 +113,9 @@ export default {
   },
   async onChange(course_id,course_status){
     
-    this.$alert("Hello Vue Simple Alert.");
+
     this.$confirm("Are you sure?").then(() => {
       CourseService.updateStatus(course_id,course_status);
-      alert('Coures : '+course_id);
 });
 
   },
