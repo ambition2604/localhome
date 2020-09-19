@@ -98,7 +98,7 @@ export default {
           item.quantity ++;
         }
         this.count ++;
-        this.total = this.count * item.price;
+        this.total = Number(this.total) + item.price;
         localStorage.setItem('count',this.count);
         localStorage.setItem('total',this.total);
         var check = 0;
@@ -123,18 +123,11 @@ export default {
           item.quantity --;
         }
         this.count --;
-        this.total = this.count * item.price;
+        this.total = Number(this.total)- item.price;
         localStorage.setItem('count',this.count);
         localStorage.setItem('total',this.total);
-        var check = 0;
+       
         this.c.forEach(element => {
-        if(element.id == item.id && element.course_id == localStorage.getItem('course_id')) check = 1; 
-        });
-        if(check == 0 && item.quantity>0 ){
-          this.c.push(item);
-        }
-        else{
-          this.c.forEach(element => {
             if(element.id == item.id && element.course_id == localStorage.getItem('course_id')) {
                 element.quantity = item.quantity;
                 if(element.quantity==0){
@@ -143,7 +136,7 @@ export default {
                 }
             }
           });
-        }
+        
         }
         localStorage.setItem('items',JSON.stringify(this.c));
       }

@@ -68,11 +68,16 @@
                let items = JSON.parse(localStorage.getItem('items'));
                 items.forEach(element => {
                    if(element.id == item.id && element.course_id == item.course_id){
-                       items.pop(item);
                        localStorage.setItem('count',localStorage.getItem('count')-item.quantity);
-                       this.count -= item.quantity;
+                       this.count = Number(this.count) - item.quantity;
                        localStorage.setItem('total',localStorage.getItem('total')-item.quantity*item.price);
-                       this.total -= item.quantity*item.price;
+                       this.total = Number(this.total) - item.quantity*item.price;
+                       items.forEach(element => {
+                           if(element.id == item.id && element.course_id == item.course_id) {
+                                    var index = items.indexOf(element);
+                                    items.splice(index,1)
+                            }
+                       });
                    }
                });
                this.items = items;

@@ -3,6 +3,7 @@ import axios from 'axios';
 const url ='http://localhost:3000/api/course/';
 const url1 ='http://localhost:3000/api/course/id';
 const url2 ='http://localhost:3000/api/course/add';
+const url3 ='http://localhost:3000/api/course/updatestatus';
 class CourseService{
     //Get course
     static async getCoursesbyId(host_id){
@@ -27,6 +28,13 @@ class CourseService{
     //Delete course
     static deleteCourse(id) {
         return axios.delete(`${url}${id}`);
+    }
+    static async updateStatus(course_id,course_status){
+        var res = await axios.post(url3,{
+            "course_id":course_id,
+            "course_status":course_status
+        });
+        if (res)  return res.data;
     }
 }
 export default CourseService;
