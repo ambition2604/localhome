@@ -10,7 +10,7 @@ class ShopService{
     }
     static async getShopbyID(shop_id){
         var res = await axios.post(url1,{
-            shop_id:shop_id
+            "shop_id":shop_id
         });
         
         if (res)  return res.data;

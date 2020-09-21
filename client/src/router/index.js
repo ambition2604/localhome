@@ -6,6 +6,7 @@ import Home from '../views/Home.vue'
 import Menu from '../views/Menu.vue'
 import Bag from '../views/Bag.vue'
 import MyCourseDetail from '../views/MyCourseDetail.vue'
+import Order from '../views/Order.vue'
 Vue.use(VueRouter)
   
   const routes = [
@@ -13,6 +14,11 @@ Vue.use(VueRouter)
     path: '/course',
     name: 'Course',
     component: MyCourse
+  },
+  {
+    path: '/order',
+    name: 'Order',
+    component: Order
   },
   {
     path: '/course_detail',
