@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MyCourse from '../views/MyCourse.vue'
-import CourseInfo from '../views/CourseInfo.vue'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Menu from '../views/Menu.vue'
 import Bag from '../views/Bag.vue'
-
+import MyCourseDetail from '../views/MyCourseDetail.vue'
 Vue.use(VueRouter)
   
   const routes = [
@@ -16,9 +15,9 @@ Vue.use(VueRouter)
     component: MyCourse
   },
   {
-    path: '/courseinfo',
-    name: 'CourseInfo',
-    component: CourseInfo
+    path: '/course_detail',
+    name: 'CourseDetail',
+    component: MyCourseDetail
   },
   {
     path: '/menu',

@@ -90,7 +90,6 @@ export default {
       var c =[];
       c.push(i);
       localStorage.setItem('items',JSON.stringify(c));
-      console.log(localStorage.getItem('items'));
       localStorage.setItem('total',0);
       localStorage.setItem('count',0);
       this.$router.replace({ name: "Login" });

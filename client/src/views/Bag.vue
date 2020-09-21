@@ -38,7 +38,7 @@
     <div  class="col-4 position" style="font-family: Comic Sans MS;">
     <h3>Count : {{count}}</h3> 
     <h3>Total : {{total}} VND</h3>
-    <button  class="btn btn-info" style="width:80%;height:50%;font-size:20px;">Checkout</button>
+    <button  class="btn btn-info" style="width:80%;height:50%;font-size:20px;" v-on:click="checkout()">Checkout</button>
     </div>
     
 </div >
@@ -52,6 +52,7 @@
 </div>  
 </template>
 <script>
+    
     export default {
         data() {
             return {
@@ -65,7 +66,7 @@
                 this.$router.replace({ name: "Home" });
            },
            async delete_item(item){
-               let items = JSON.parse(localStorage.getItem('items'));
+                let items = JSON.parse(localStorage.getItem('items'));
                 items.forEach(element => {
                    if(element.id == item.id && element.course_id == item.course_id){
                        localStorage.setItem('count',localStorage.getItem('count')-item.quantity);
@@ -83,8 +84,60 @@
                this.items = items;
                localStorage.setItem('items',JSON.stringify(items));
            },
+           async increment(item){
+                let items = JSON.parse(localStorage.getItem('items'));
+                items.forEach(element => {
+                    if(element.id == item.id && element.course_id == item.course_id){
+                        this.count = Number(this.count) + 1;
+                        localStorage.setItem('count', this.count);
+                        this.total = Number(this.total) + item.price;
+                        localStorage.setItem('total',this.total);
+                        item.quantity += 1;
+                        item.total +=  item.price;
+                        this.items.forEach(element => {
+                            if(element.id == item.id && element.course_id == item.course_id) element.quantity = item.quantity;
+                        });
+                        localStorage.setItem('items',JSON.stringify( this.items));
+                    }
+                });
+                localStorage.setItem('items',JSON.stringify( this.items));
+           },
+           async decrement(item){
+                let items = JSON.parse(localStorage.getItem('items'));
+                items.forEach(element => {
+                    if(element.id == item.id && element.course_id == item.course_id){
+                        this.count = Number(this.count) - 1;
+                        localStorage.setItem('count',this.count);
+                        this.total = Number(this.total) - item.price;
+                        localStorage.setItem('total',this.total);
+                        item.quantity -= 1;
+                        item.total -=  item.price;
+                        this.items.forEach(element => {
+                            if(element.id == item.id && element.course_id == item.course_id){ element.quantity = item.quantity;
+                            if(item.quantity == 0) {
+                                var index = this.items.indexOf(element);
+                                this.items.splice(index,1);
+                            }
+                            }
+                        });
+                        localStorage.setItem('items',JSON.stringify(this.items));
+                    }
+                    localStorage.setItem('items',JSON.stringify(this.items));
+                });
+           },
            async view_course(){
                this.$router.push({ name: 'Menu'});
+           },
+           async checkout(){
+               
+                var i = {"id":0,"name":"0","image":"0","price":0,"menu_id":0,"quantity":0};
+                var c =[];
+                c.push(i);
+                localStorage.setItem('items',JSON.stringify(c));
+                localStorage.setItem('total',0);
+                localStorage.setItem('count',0);
+                this.items = c;
+
            }
        },
     

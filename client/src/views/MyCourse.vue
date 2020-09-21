@@ -46,7 +46,7 @@
             <option v-if="course.status == 'Closing'">Opening</option>
           </select>
 
-          <button style="margin-left:80px" class="btn btn-info" v-on:click="viewCourseDetail(course.id)">Details</button>
+          <button style="margin-left:80px" class="btn btn-info" v-on:click="viewCourseDetail(course)">Details</button>
           </h5>
         
         </div>
@@ -106,7 +106,7 @@ export default {
         }
     },
   async viewCourseDetail(item) {
-       this.$router.push({ name: "Order",params: { u: item }});
+       this.$router.push({ name: "CourseDetail",params: { u: item }});
   },
   async update_status(status){
     alert(status);

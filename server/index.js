@@ -14,6 +14,7 @@ const shop = require('./routers/api/shop');
 const user = require('./routers/api/user');
 const menu = require('./routers/api/menu');
 const item = require('./routers/api/item');
+const order = require('./routers/api/order');
 app.use('/api/course',course);
 app.use('/api/login',login);
 app.use('/api/shop',shop);
