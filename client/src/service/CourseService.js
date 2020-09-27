@@ -4,6 +4,7 @@ const url ='http://localhost:3000/api/course/';
 const url1 ='http://localhost:3000/api/course/id';
 const url2 ='http://localhost:3000/api/course/add';
 const url3 ='http://localhost:3000/api/course/updatestatus';
+const url4 ='http://localhost:3000/api/course/info';
 class CourseService{
     //Get course
     static async getCoursesbyId(host_id){
@@ -33,6 +34,12 @@ class CourseService{
         var res = await axios.post(url3,{
             "course_id":course_id,
             "course_status":course_status
+        });
+        if (res)  return res.data;
+    }
+    static async getInfo(course_id){
+        var res = await axios.post(url4,{
+            "course_id":course_id,
         });
         if (res)  return res.data;
     }

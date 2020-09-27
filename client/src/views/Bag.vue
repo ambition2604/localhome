@@ -52,7 +52,9 @@
 </div>  
 </template>
 <script>
-    
+import OrderService from '../service/OrderService'
+import UserService from '../service/UserService'
+
     export default {
         data() {
             return {
@@ -129,7 +131,44 @@
                this.$router.push({ name: 'Menu'});
            },
            async checkout(){
+                var list = this.items;
+                var list_courses =[]
+                list.forEach(element => {
+                    if(element.id!=0)list_courses.push(element.course_id);
+                });
+                function onlyUnique(value, index, self) {
+                    return self.indexOf(value) === index;
+                }
+                list_courses = list_courses.filter(onlyUnique);
+                var user = JSON.stringify(await UserService.findUsers(localStorage.getItem('username')));
+                var x = user.toString(); 
+                var start = x.indexOf(':')+1;
+                var end =   x.indexOf(',"username');
+                this.host_id = user.substring(start,end);
+
+                
+                for (let i = 0; i < list_courses.length; i++) {
+                   await OrderService.addOrder(this.host_id,list_courses[i]);
+                }
                
+                for (let i = 0; i < list_courses.length; i++) {
+                    for (let j = 0; j < list.length; j++) {  
+                         var maxs = await OrderService.getMaxID(this.host_id,list_courses[i]);
+                        if(list_courses[i]== list[j].course_id)
+                        await OrderService.addDetail(maxs[0].id,list[j].id,list[j].quantity,(list[j].quantity*list[j].price));
+                    }
+                    
+                }
+
+
+               
+               
+
+                
+
+
+
+
                 var i = {"id":0,"name":"0","image":"0","price":0,"menu_id":0,"quantity":0};
                 var c =[];
                 c.push(i);

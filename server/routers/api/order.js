@@ -16,7 +16,7 @@ router.post('/add',async (req,res) =>{
             throw error;
         }
     });
-    let sql = `INSERT INTO order (user_id,course_id) VALUES ('${user_id}','${course_id}')`;
+    let sql = `INSERT INTO orders (user_id,course_id) VALUES ('${user_id}','${course_id}')`;
     await db.query(sql,(error) => {
         if(error) throw error;
         res.send('Success');
@@ -40,7 +40,7 @@ router.post('/detail',async (req,res) =>{
             throw error;
         }
     });
-    let sql = `INSERT INTO order (order_id,item_id,quantity,total) VALUES ('${order_id}','${item_id}','${quantity}','${total}')`;
+    let sql = `INSERT INTO order_detail (order_id,item_id,quantity,total) VALUES ('${order_id}','${item_id}','${quantity}','${total}')`;
     await db.query(sql,(error) => {
         if(error) throw error;
         res.send('Success');
@@ -87,7 +87,7 @@ router.post('/list', async(req,res) =>{
             throw error;
         }
     });
-    let sql = `SELECT sum(order_detail.total*order_detail.quantity) as total,orders.*,course.status,course.title,users.username FROM orders inner join course on course.id = orders.course_id inner join users on users.id = course.host_id inner join order_detail on order_detail.order_id = orders.id group by orders.id having orders.user_id = '${user_id}' and orders.course_id = '${course_id}'`;        
+    let sql = `SELECT sum(order_detail.total) as total,orders.*,course.status,course.title,users.username FROM orders inner join course on course.id = orders.course_id inner join users on users.id = course.host_id inner join order_detail on order_detail.order_id = orders.id group by orders.id having orders.user_id = '${user_id}' and orders.course_id = '${course_id}'`;        
     await db.query(sql,(error,result) => {
         if(error) throw error;
         
@@ -113,6 +113,32 @@ router.post('/getdetail', async(req,res) =>{
         }
     });
     let sql = `SELECT order_detail.*,item.name,item.price FROM order_detail inner join item on item.id = order_detail.item_id WHERE order_detail.order_id = '${order_id}'`;        
+    await db.query(sql,(error,result) => {
+        if(error) throw error;
+        
+        if(result.length > 0){
+
+            res.send(result);
+
+        }else res.status(401).json({error: "Error"});
+    });    
+    db.end();
+});
+router.post('/getmaxid', async(req,res) =>{
+    var user_id = req.body.user_id;
+    var course_id = req.body.course_id;
+    var db =  mysql.createConnection({
+        host        : 'localhost',
+        user        : 'root',
+        password    : '1234',
+        database    : 'foodorder'
+    });
+    await db.connect((error) => {
+        if(error){
+            throw error;
+        }
+    });
+    let sql = `select max(id) as id from orders where course_id ='${course_id}' and user_id = '${user_id}'`;        
     await db.query(sql,(error,result) => {
         if(error) throw error;
         

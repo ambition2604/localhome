@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluids" id="app">
     <div class=" bg-container">
-      <div><img src="./static/bgfood.jpg" alt="noimage"></div>
+      <div><img src="./static/food1.jpeg" alt="noimage" width="500px" height="300px"></div>
     </div>
     <div style="margin-bottom: 0.5px;" class="routing" v-if="this.$route.path !== '/login'">
     <nav class="navbar navbar-dark bg-warning navv" style="font-family: Comic Sans MS;padding-left:150px">

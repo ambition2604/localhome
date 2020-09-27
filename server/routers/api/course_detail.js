@@ -2,8 +2,8 @@ const express = require('express');
 const mysql = require('mysql');
 const router = express.Router();
 
-//Get 
-router.post('/', async(req,res) =>{
+router.post('/get_user', async(req,res) =>{
+    var course_id = req.body.course_id;
     var db =  mysql.createConnection({
         host        : 'localhost',
         user        : 'root',
@@ -15,11 +15,10 @@ router.post('/', async(req,res) =>{
             throw error;
         }
     });
-    var status = 'Opening';
-    let sql = `SELECT users.username,course.title,course.status,course.id,course.shop_id,shop.name,shop.phone,users.username FROM course inner join shop on shop.id  = course.shop_id inner join users on course.host_id = users.id having course.status = '${status}'`;        
+    let sql = `select distinct orders.user_id,users.username from orders inner join users on users.id = orders.user_id where orders.course_id = '${course_id}'`;        
     await db.query(sql,(error,result) => {
         if(error) throw error;
-        
+
         if(result.length > 0){
 
             res.send(result);
@@ -28,11 +27,9 @@ router.post('/', async(req,res) =>{
     });    
     db.end();
 });
-
-//Post
-
-router.post('/id', async(req,res) =>{
-    var host_id = req.body.host_id;
+router.post('/get_list_order', async(req,res) =>{
+    var course_id = req.body.course_id;
+    var user_id = req.body.user_id;;
     var db =  mysql.createConnection({
         host        : 'localhost',
         user        : 'root',
@@ -44,46 +41,21 @@ router.post('/id', async(req,res) =>{
             throw error;
         }
     });
-    let sql = `SELECT course.id,course.title,course.createDate,course.status,course.host_id,shop.name,shop.phone FROM course inner join shop on shop.id  = course.shop_id having course.host_id = '${host_id}'`;        
+    let sql = `select orders.*,sum(order_detail.total) as total from orders inner join order_detail on order_detail.order_id = orders.id inner join users on users.id = orders.user_id group by orders.id having orders.course_id = '${course_id}' and orders.user_id = '${user_id}'`;        
     await db.query(sql,(error,result) => {
         if(error) throw error;
-        
+
         if(result.length > 0){
 
             res.send(result);
 
         }else res.status(401).json({error: "Error"});
-    });    
-    db.end();
-});
-
-
-router.post('/add',async (req,res) =>{
-    var title = req.body.title;
-    var des = req.body.des;
-    var shop_id = req.body.shop_id;
-    var host_id = req.body.host_id;
-    var db =  mysql.createConnection({
-        host        : 'localhost',
-        user        : 'root',
-        password    : '1234',
-        database    : 'foodorder'
-    });
-    await db.connect((error) => {
-        if(error){
-            throw error;
-        }
-    });
-    let sql = `INSERT INTO course (title,des,shop_id,host_id) VALUES ('${title}','${des}','${shop_id}','${host_id}')`;
-    await db.query(sql,(error) => {
-        if(error) throw error;
-        res.send('Success');
     });    
     db.end();
 });
 router.post('/updatestatus',async (req,res) =>{
-    var course_id = req.body.course_id;
-    var course_status = req.body.course_status;
+    var order_id = req.body.order_id;
+    var list_status = req.body.list_status;
     var db =  mysql.createConnection({
         host        : 'localhost',
         user        : 'root',
@@ -95,17 +67,17 @@ router.post('/updatestatus',async (req,res) =>{
             throw error;
         }
     });
-    var update_status ='Closing';
-    if(course_status=='Closing') update_status = 'Opening';
-    let sql = `UPDATE course SET status = '${update_status}' WHERE id = '${course_id}'`;
+    var update_status ='Paid';
+    if(list_status=='Paid') update_status = 'Unpaid';
+    let sql = `UPDATE orders SET status = '${update_status}' WHERE id = '${order_id}'`;
     await db.query(sql,(error) => {
         if(error) throw error;
         res.send('Success');
     });    
     db.end();
 });
-router.post('/info', async(req,res) =>{
-    var course_id = req.body.course_id;
+router.post('/list_details', async(req,res) =>{
+    var order_id = req.body.order_id;;
     var db =  mysql.createConnection({
         host        : 'localhost',
         user        : 'root',
@@ -117,10 +89,35 @@ router.post('/info', async(req,res) =>{
             throw error;
         }
     });
-    let sql = `SELECT course.id,course.title,shop.name,shop.phone from course inner join shop on course.shop_id = shop.id having course.id = '${course_id}'`;        
+    let sql = `select orders.id,item.price,item.name,order_detail.quantity,order_detail.total as total   from order_detail inner join item on item.id = order_detail.item_id inner join orders on orders.id = order_detail.order_id having orders.id = '${order_id}'`;        
     await db.query(sql,(error,result) => {
         if(error) throw error;
-        
+
+        if(result.length > 0){
+
+            res.send(result);
+
+        }else res.status(401).json({error: "Error"});
+    });    
+    db.end();
+});
+router.post('/leteat', async(req,res) =>{
+    var course_id = req.body.course_id;;
+    var db =  mysql.createConnection({
+        host        : 'localhost',
+        user        : 'root',
+        password    : '1234',
+        database    : 'foodorder'
+    });
+    await db.connect((error) => {
+        if(error){
+            throw error;
+        }
+    });
+    let sql = `select order_detail.item_id,item.name,sum(order_detail.total) as total, sum(order_detail.quantity) as quantity,orders.course_id from order_detail inner join item on order_detail.item_id = item.id inner join orders on orders.id = order_detail.order_id group by order_detail.item_id having orders.course_id = '${course_id}'`;        
+    await db.query(sql,(error,result) => {
+        if(error) throw error;
+
         if(result.length > 0){
 
             res.send(result);

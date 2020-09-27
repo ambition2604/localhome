@@ -1,8 +1,8 @@
 <template>
   <div class="container" style="font-family: Comic Sans MS">
   <div>
-  <b-button v-b-modal.modal-1><b-icon icon="plus-square"></b-icon></b-button>
-  <b-modal id="modal-1" hide-footer="true" title="Add Course">
+  <b-button v-b-modal.modal-1><b-icon icon="plus-square" ></b-icon></b-button>
+  <b-modal id="modal-1" :hide-footer="true" title="Add Course" >
     <div>
 			<form class="form-group" style="font-family: Comic Sans MS">
         <label>Title</label><hr>
@@ -106,6 +106,7 @@ export default {
         }
     },
   async viewCourseDetail(item) {
+        localStorage.setItem('c_id',item.id);
        this.$router.push({ name: "CourseDetail",params: { u: item }});
   },
   async update_status(status){

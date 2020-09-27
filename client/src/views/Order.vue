@@ -55,9 +55,9 @@ import OrderService from '../service/OrderService'
             var end =   x.indexOf(',"username');
 
             this.host_id = user.substring(start,end);
-            this.orders = await OrderService.getOrder(this.host_id);
-            this.order_details = await OrderService.getOrderDetails();
-            console.log(this.order_details);    
+            this.orders = await OrderService.getOrder(this.host_id); 
+            var max = await OrderService.getMaxID(1,1);
+            console.log(max[0].id);
         },
         methods: {
           async  listorder(course_id){
@@ -65,8 +65,7 @@ import OrderService from '../service/OrderService'
                
          },
          async details(id){
-                console.log(id);
-                this.order_details = await OrderService.getOrderDetails(1);
+                this.order_details = await OrderService.getOrderDetails(id);
          }
         },
     }
